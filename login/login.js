@@ -3,13 +3,13 @@ const password = document.querySelector("#login-password");
 
 const loginBtn = document.querySelector(".login-btn");
 
-if (sessionStorage.getItem("current user"))
+if (localStorage.getItem("current user"))
   window.location.href = "../home/home.html";
 
 loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const users = JSON.parse(sessionStorage.getItem("users"));
+  const users = JSON.parse(localStorage.getItem("users"));
   const currentUser = [];
 
   if (!users) return alert("user not found!");
@@ -38,7 +38,7 @@ loginBtn.addEventListener("click", (e) => {
 
   currentUser.push(user);
 
-  sessionStorage.setItem("current user", JSON.stringify(currentUser));
+  localStorage.setItem("current user", JSON.stringify(currentUser));
 
   username.value = "";
   password.value = "";

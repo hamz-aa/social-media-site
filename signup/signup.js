@@ -5,13 +5,13 @@ const confirmPassword = document.querySelector("#confirm-signup-password");
 
 const signupBtn = document.querySelector(".signup-btn");
 
-if (sessionStorage.getItem("current user"))
+if (localStorage.getItem("current user"))
   window.location.href = "../home/home.html";
 
 signupBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const users = JSON.parse(sessionStorage.getItem("users")) || [];
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
   if (
     !username.value ||
@@ -35,7 +35,7 @@ signupBtn.addEventListener("click", (e) => {
 
   users.push(user);
 
-  sessionStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("users", JSON.stringify(users));
 
   username.value = "";
   email.value = "";

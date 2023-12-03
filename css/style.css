@@ -286,11 +286,11 @@ dialog {
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
-.same-content .left-content {
+.left-content .same-content {
   margin-right: 30px;
 }
 
-.same-content .right-content {
+.right-content .same-content {
   margin-left: 30px;
 }
 
@@ -308,24 +308,97 @@ dialog {
   border-radius: 0;
 }
 
-.main-content {
-  background-color: #fff;
-  border: 2px solid;
-}
-
 .main-content .logo-text {
-  font-size: 1rem;
-  padding: 0.8em;
+  font-size: 1.6rem;
+  padding: 0.5em;
 }
 
 .main-content .logo {
   padding: 0;
 }
 
-.main-content .same-content-1 {
+.main-content .same-content {
   padding: 1em;
 }
 
 .main-content .same-content {
   width: 100%;
+}
+
+.logo {
+  width: fit-content;
+}
+
+.user-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-input input[type="file"] {
+  display: none;
+}
+
+.user-input .input-image-wrapper label {
+  flex: 1 1 15%;
+  background-color: #fff;
+  border: 2px solid;
+  border-radius: 5px;
+  text-align: center;
+  padding: 0.3em 0.5em;
+  cursor: pointer;
+}
+
+.user-input .logo {
+  flex: 1 1 10%;
+}
+
+.user-input .input[type="text"] {
+  flex: 1 1 60%;
+}
+
+.user-input button {
+  flex: 1 1 15%;
+  margin-bottom: 0;
+}
+
+.main-content .card {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 1.5em;
+}
+
+.main-content .top-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-content .profile-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+}
+
+.main-content .caption {
+  margin-top: 15px;
+  padding-left: 0.5em;
+}
+
+.main-content .caption p {
+  font-size: 1.2rem;
+}
+
+.main-content .upload-image img {
+  width: 90%;
+  height: 90%;
+  border-radius: 0;
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.main-content .profile-name {
+  font-size: 1.2rem;
 }
