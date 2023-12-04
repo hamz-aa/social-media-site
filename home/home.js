@@ -9,6 +9,8 @@ const userText = document.querySelector(".user-text");
 const mainContent = document.querySelector(".main-content");
 const userInput = document.querySelector(".user-input");
 
+sidebar.style.opacity = "0";
+
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || {};
 
@@ -26,6 +28,7 @@ else {
 if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
 
 logo.addEventListener("click", () => {
+  sidebar.style.opacity = "1";
   if (sidebar.classList.contains("active-sidebar")) {
     sidebar.classList.replace("active-sidebar", "un-active-sidebar");
   } else {
@@ -39,6 +42,8 @@ logoutBtn.addEventListener("click", () => {
 });
 
 imageInput.addEventListener("change", (e) => {
+  if (!userText.value) return alert("enter some text first");
+
   const image = e.target.files[0];
   const reader = new FileReader();
 
