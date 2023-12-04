@@ -1,10 +1,17 @@
 const signupBtn = document.querySelector(".signup-btn");
 const loginBtn = document.querySelector(".login-btn");
+const wrapper = document.querySelector(".wrapper");
 
 signupBtn.addEventListener("click", () => {
-  window.location.href = "./signup/signup.html";
+  wrapper.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.href = "./signup/signup.html";
+  }, 1500);
 });
 
 loginBtn.addEventListener("click", () => {
-  window.location.href = "./login/login.html";
+  wrapper.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.href = "./login/login.html";
+  }, 1500);
 });

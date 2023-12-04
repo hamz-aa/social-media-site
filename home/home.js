@@ -12,8 +12,6 @@ const userInput = document.querySelector(".user-input");
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || {};
 
-if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
-
 if (!currentUser) window.location.href = "../index.html";
 else {
   logos.forEach((logo) => {
@@ -24,6 +22,8 @@ else {
     imageUpload();
   }
 }
+
+if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
 
 logo.addEventListener("click", () => {
   if (sidebar.classList.contains("active-sidebar")) {

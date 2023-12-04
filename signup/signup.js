@@ -2,7 +2,7 @@ const username = document.querySelector("#signup-username");
 const email = document.querySelector("#signup-email");
 const password = document.querySelector("#signup-password");
 const confirmPassword = document.querySelector("#confirm-signup-password");
-
+const wrapper = document.querySelector(".wrapper");
 const signupBtn = document.querySelector(".signup-btn");
 
 if (localStorage.getItem("current user"))
@@ -42,5 +42,8 @@ signupBtn.addEventListener("click", (e) => {
   password.value = "";
   confirmPassword.value = "";
 
-  window.location.href = "../login/login.html";
+  wrapper.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.href = "../login/login.html";
+  }, 1500);
 });

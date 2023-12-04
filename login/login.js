@@ -1,6 +1,6 @@
 const username = document.querySelector("#login-username");
 const password = document.querySelector("#login-password");
-
+const wrapper = document.querySelector(".wrapper");
 const loginBtn = document.querySelector(".login-btn");
 
 if (localStorage.getItem("current user"))
@@ -43,5 +43,8 @@ loginBtn.addEventListener("click", (e) => {
   username.value = "";
   password.value = "";
 
-  window.location.href = "../home/home.html";
+  wrapper.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.href = "../home/home.html";
+  }, 1500);
 });
