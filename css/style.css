@@ -139,6 +139,7 @@ header {
 .sidebar a {
   color: #000;
   font-weight: 500;
+  position: relative;
 }
 
 .nav-content a.active-anchor {
@@ -148,6 +149,23 @@ header {
 .nav-content a:hover,
 .sidebar a:hover {
   color: var(--purple);
+}
+
+.nav-content a::before,
+.sidebar a::before {
+  content: "";
+  width: 0;
+  height: 2px;
+  background-color: var(--purple);
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  transition: width 0.3s ease-out;
+}
+
+.nav-content a:hover::before,
+.sidebar a:hover::before {
+  width: 100%;
 }
 
 .nav-content {
