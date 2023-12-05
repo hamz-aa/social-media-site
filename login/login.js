@@ -2,6 +2,7 @@ const username = document.querySelector("#login-username");
 const password = document.querySelector("#login-password");
 const wrapper = document.querySelector(".wrapper");
 const loginBtn = document.querySelector(".login-btn");
+let email;
 
 if (localStorage.getItem("current user"))
   window.location.href = "../home/home.html";
@@ -18,12 +19,9 @@ loginBtn.addEventListener("click", (e) => {
     return alert("wrong password");
   }
 
-  let flag = true;
-
-  users.forEach((user) => {
-    if (username.value !== user.name || password.value !== user.password) {
-      flag = false;
-    }
+  let flag = users.find((user) => {
+    email = user.email;
+    return username.value === user.name && password.value === user.password;
   });
 
   if (!flag) {
@@ -34,6 +32,7 @@ loginBtn.addEventListener("click", (e) => {
   const user = {
     name: username.value,
     password: password.value,
+    email: email,
   };
 
   currentUser.push(user);

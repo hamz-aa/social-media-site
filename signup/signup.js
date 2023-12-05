@@ -20,11 +20,15 @@ signupBtn.addEventListener("click", (e) => {
     !confirmPassword.value
   )
     return alert("Fill all fields");
-  if (password.value.length < 8) {
+  if (password.value.length < 8)
     return alert("Password should be greater than 7 characters");
-  }
-  if (password.value !== confirmPassword.value) {
+  if (password.value !== confirmPassword.value)
     return alert("Password does not match Confirm Password");
+  if (users.length > 0) {
+    let exists = users.find((user) => {
+      return user.name === username.value || user.email === email.value;
+    });
+    if (exists) return alert("user already exists");
   }
 
   const user = {
