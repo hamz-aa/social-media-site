@@ -11,6 +11,7 @@ const userInput = document.querySelector(".user-input");
 
 sidebar.style.opacity = "0";
 userText.value = "";
+let flag = false;
 
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || {};
@@ -58,6 +59,7 @@ imageInput.addEventListener("change", (e) => {
   });
 
   if (image) reader.readAsDataURL(image);
+  flag = true;
 });
 
 shareBtn.addEventListener("click", postUpload);
@@ -68,7 +70,7 @@ function postUpload() {
   const card = document.createElement("div");
   card.classList.add("same-content", "card");
 
-  if (userText.value && localStorage.getItem("images")) {
+  if (userText.value && localStorage.getItem("images") && flag) {
     let imgList = JSON.parse(localStorage.getItem("images"))[
       currentUser[0].name
     ];
@@ -93,6 +95,7 @@ function postUpload() {
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
     userText.value = "";
 
+    flag = false;
     return;
   }
 
@@ -111,7 +114,8 @@ function postUpload() {
 
   const data = { caption: userText.value };
   images[currentUser[0].name].push(data);
-
+  localStorage.setItem("images", JSON.stringify(images));
+  
   userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
 
   userText.value = "";
@@ -124,6 +128,24 @@ function imageUpload() {
     data.forEach((val) => {
       const card = document.createElement("div");
       card.classList.add("same-content", "card");
+
+      if(!val.img){
+        card.innerHTML += `<div class="top-content">
+    <div class="profile-wrapper">
+      <div class="logo">
+        <p class="logo-text"></p>
+      </div>
+      <p class="profile-name">${key}</p>
+    </div>
+    <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <div class="caption">
+    <p>${val.caption}</p>
+  </div>`;
+
+      }
+      else {
+
       card.innerHTML += `<div class="top-content">
     <div class="profile-wrapper">
       <div class="logo">
@@ -139,6 +161,7 @@ function imageUpload() {
   <div class="upload-image">
     <img src="${val.img}" alt="" />
   </div>`;
+      }
 
       userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
     });
