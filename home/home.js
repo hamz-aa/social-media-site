@@ -15,6 +15,7 @@ let flag = false;
 
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || {};
+let order = parseInt(JSON.parse(localStorage.getItem("order"))) || 0;
 
 if (!currentUser) window.location.href = "../index.html";
 else {
@@ -53,6 +54,9 @@ imageInput.addEventListener("change", (e) => {
   reader.addEventListener("load", () => {
     data.img = reader.result;
     data.caption = userText.value;
+    data.order = order;
+
+    localStorage.setItem("order", JSON.stringify(++order));
 
     images[currentUser[0].name].push(data);
     localStorage.setItem("images", JSON.stringify(images));
@@ -112,10 +116,11 @@ function postUpload() {
     <p>${userText.value}</p>
   </div>`;
 
-  const data = { caption: userText.value };
+  const data = { caption: userText.value, order: order };
+  localStorage.setItem("order", JSON.stringify(++order));
   images[currentUser[0].name].push(data);
   localStorage.setItem("images", JSON.stringify(images));
-  
+
   userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
 
   userText.value = "";
@@ -123,35 +128,45 @@ function postUpload() {
 
 function imageUpload() {
   let storedImages = JSON.parse(localStorage.getItem("images"));
+
+  let orderedImages = [];
+  // for (let i = 0; i < order; i++) {
+  //   orderedImages.push(0);
+  // }
+
   for (key of Object.keys(storedImages)) {
     let data = storedImages[key];
-    data.forEach((val) => {
-      const card = document.createElement("div");
-      card.classList.add("same-content", "card");
 
-      if(!val.img){
-        card.innerHTML += `<div class="top-content">
+    data.forEach((val) => {
+      val.key = key;
+      orderedImages.splice(val.order, 0, val);
+    });
+  }
+
+  orderedImages.forEach((val) => {
+    const card = document.createElement("div");
+    card.classList.add("same-content", "card");
+
+    if (!val.img) {
+      card.innerHTML += `<div class="top-content">
     <div class="profile-wrapper">
       <div class="logo">
         <p class="logo-text"></p>
       </div>
-      <p class="profile-name">${key}</p>
+      <p class="profile-name">${val.key}</p>
     </div>
     <i class="fa-solid fa-ellipsis"></i>
   </div>
   <div class="caption">
     <p>${val.caption}</p>
   </div>`;
-
-      }
-      else {
-
+    } else {
       card.innerHTML += `<div class="top-content">
     <div class="profile-wrapper">
       <div class="logo">
         <p class="logo-text"></p>
       </div>
-      <p class="profile-name">${key}</p>
+      <p class="profile-name">${val.key}</p>
     </div>
     <i class="fa-solid fa-ellipsis"></i>
   </div>
@@ -161,9 +176,8 @@ function imageUpload() {
   <div class="upload-image">
     <img src="${val.img}" alt="" />
   </div>`;
-      }
+    }
 
-      userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
-    });
-  }
+    userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
+  });
 }
