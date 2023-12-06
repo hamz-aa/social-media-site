@@ -1,5 +1,5 @@
 const logo = document.querySelector(".logo-text");
-const logos = document.querySelectorAll(".logo-text");
+let logos = document.querySelectorAll(".logo-text");
 const sidebar = document.querySelector(".sidebar");
 const logoutBtn = document.querySelector(".logout-btn");
 const setting = document.querySelector(".setting");
@@ -8,6 +8,8 @@ const shareBtn = document.querySelector(".share-btn");
 const userText = document.querySelector(".user-text");
 const mainContent = document.querySelector(".main-content");
 const userInput = document.querySelector(".user-input");
+const home = document.querySelector(".home");
+const profile = document.querySelector(".profile");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -124,15 +126,18 @@ function postUpload() {
   userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
 
   userText.value = "";
+
+  logos = document.querySelectorAll(".logo-text");
+  console.log(logos);
+  logos.forEach((logo) => {
+    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+  });
 }
 
 function imageUpload() {
   let storedImages = JSON.parse(localStorage.getItem("images"));
 
   let orderedImages = [];
-  // for (let i = 0; i < order; i++) {
-  //   orderedImages.push(0);
-  // }
 
   for (key of Object.keys(storedImages)) {
     let data = storedImages[key];
@@ -180,4 +185,86 @@ function imageUpload() {
 
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
   });
+
+  logos = document.querySelectorAll(".logo-text");
+  console.log(logos);
+  logos.forEach((logo) => {
+    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+  });
 }
+
+function showProfile() {
+  mainContent.innerHTML = `<div class="same-content user-input">
+  <div class="logo">
+    <p class="logo-text"></p>
+  </div>
+  <input
+    type="text"
+    class="user-text"
+    placeholder="what's on your mind!"
+  />
+  <div class="input-image-wrapper">
+    <label for="input-image">image</label>
+    <input type="file" name="" id="input-image" accept="image/*" />
+  </div>
+  <button class="share-btn">Share</button>
+</div>`;
+
+  let storedImages = JSON.parse(localStorage.getItem("images"));
+
+  let orderedImages = [];
+
+  let data = storedImages[currentUser[0].name];
+
+  data.forEach((val) => {
+    val.key = currentUser[0].name;
+    orderedImages.splice(val.order, 0, val);
+  });
+
+  orderedImages.reverse().forEach((val) => {
+    const card = document.createElement("div");
+    card.classList.add("same-content", "card");
+
+    if (!val.img) {
+      card.innerHTML += `<div class="top-content">
+    <div class="profile-wrapper">
+      <div class="logo">
+        <p class="logo-text"></p>
+      </div>
+      <p class="profile-name">${val.key}</p>
+    </div>
+    <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <div class="caption">
+    <p>${val.caption}</p>
+  </div>`;
+    } else {
+      card.innerHTML += `<div class="top-content">
+    <div class="profile-wrapper">
+      <div class="logo">
+        <p class="logo-text"></p>
+      </div>
+      <p class="profile-name">${val.key}</p>
+    </div>
+    <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <div class="caption">
+    <p>${val.caption}</p>
+  </div>
+  <div class="upload-image">
+    <img src="${val.img}" alt="" />
+  </div>`;
+    }
+
+    mainContent.appendChild(card);
+  });
+  logos = document.querySelectorAll(".logo-text");
+  console.log(logos);
+  logos.forEach((logo) => {
+    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+  });
+}
+
+home.addEventListener("click", () => imageUpload());
+
+profile.addEventListener("click", () => showProfile());
