@@ -425,6 +425,14 @@ dialog {
   font-size: 1.2rem;
 }
 
+header.wrapper {
+  position: relative;
+  width: auto;
+  height: auto;
+  display: block;
+  position: relative;
+}
+
 .wrapper::before {
   content: "";
   width: 0;

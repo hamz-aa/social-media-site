@@ -10,6 +10,7 @@ const mainContent = document.querySelector(".main-content");
 const userInput = document.querySelector(".user-input");
 const home = document.querySelector(".home");
 const profile = document.querySelector(".profile");
+const header = document.querySelector("header");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -31,6 +32,13 @@ else {
 }
 
 if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
+
+function displayLogo() {
+  const logos = document.querySelectorAll(".logo-text");
+  logos.forEach((logo) => {
+    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+  });
+}
 
 logo.addEventListener("click", () => {
   sidebar.style.opacity = "1";
@@ -73,16 +81,18 @@ shareBtn.addEventListener("click", postUpload);
 function postUpload() {
   if (!userText.value) return alert("enter some text first");
 
-  const card = document.createElement("div");
-  card.classList.add("same-content", "card");
+  header.classList.add("wrapper", "wrapper-active");
+  setTimeout(() => {
+    const card = document.createElement("div");
+    card.classList.add("same-content", "card");
 
-  if (userText.value && localStorage.getItem("images") && flag) {
-    let imgList = JSON.parse(localStorage.getItem("images"))[
-      currentUser[0].name
-    ];
-    imgLatest = imgList[imgList.length - 1].img;
+    if (userText.value && localStorage.getItem("images") && flag) {
+      let imgList = JSON.parse(localStorage.getItem("images"))[
+        currentUser[0].name
+      ];
+      imgLatest = imgList[imgList.length - 1].img;
 
-    card.innerHTML = `<div class="top-content">
+      card.innerHTML = `<div class="top-content">
     <div class="profile-wrapper">
       <div class="logo">
         <p class="logo-text"></p>
@@ -98,14 +108,21 @@ function postUpload() {
     <img src="${imgLatest}" alt="" />
   </div>`;
 
-    userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
-    userText.value = "";
+      userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
+      userText.value = "";
 
-    flag = false;
-    return;
-  }
+      header.classList.remove("wrapper");
+      flag = false;
 
-  card.innerHTML = `<div class="top-content">
+      logos = document.querySelectorAll(".logo-text");
+      logos.forEach((logo) => {
+        logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+      });
+
+      return;
+    }
+
+    card.innerHTML = `<div class="top-content">
     <div class="profile-wrapper">
       <div class="logo">
         <p class="logo-text"></p>
@@ -118,20 +135,21 @@ function postUpload() {
     <p>${userText.value}</p>
   </div>`;
 
-  const data = { caption: userText.value, order: order };
-  localStorage.setItem("order", JSON.stringify(++order));
-  images[currentUser[0].name].push(data);
-  localStorage.setItem("images", JSON.stringify(images));
+    const data = { caption: userText.value, order: order };
+    localStorage.setItem("order", JSON.stringify(++order));
+    images[currentUser[0].name].push(data);
+    localStorage.setItem("images", JSON.stringify(images));
 
-  userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
+    userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
 
-  userText.value = "";
+    userText.value = "";
 
-  logos = document.querySelectorAll(".logo-text");
-  console.log(logos);
-  logos.forEach((logo) => {
-    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-  });
+    logos = document.querySelectorAll(".logo-text");
+    logos.forEach((logo) => {
+      logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+    });
+    header.classList.remove("wrapper-active");
+  }, 1500);
 }
 
 function imageUpload() {
@@ -187,7 +205,6 @@ function imageUpload() {
   });
 
   logos = document.querySelectorAll(".logo-text");
-  console.log(logos);
   logos.forEach((logo) => {
     logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
   });
