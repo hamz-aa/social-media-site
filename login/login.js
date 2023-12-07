@@ -2,6 +2,7 @@ const username = document.querySelector("#login-username");
 const password = document.querySelector("#login-password");
 const wrapper = document.querySelector(".wrapper");
 const loginBtn = document.querySelector(".login-btn");
+const signupLink = document.querySelector(".signup-link");
 let email;
 
 if (localStorage.getItem("current user"))
@@ -45,5 +46,12 @@ loginBtn.addEventListener("click", (e) => {
   wrapper.classList.add("wrapper-active");
   setTimeout(() => {
     window.location.href = "../home/home.html";
+  }, 1500);
+});
+
+signupLink.addEventListener("click", () => {
+  wrapper.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.href = "../signup/signup.html";
   }, 1500);
 });

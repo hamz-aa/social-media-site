@@ -1,5 +1,4 @@
 const logo = document.querySelector(".logo-text");
-let logos = document.querySelectorAll(".logo-text");
 const sidebar = document.querySelector(".sidebar");
 const logoutBtn = document.querySelector(".logout-btn");
 const setting = document.querySelector(".setting");
@@ -22,9 +21,7 @@ let order = parseInt(JSON.parse(localStorage.getItem("order"))) || 0;
 
 if (!currentUser) window.location.href = "../index.html";
 else {
-  logos.forEach((logo) => {
-    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-  });
+  displayLogo();
 
   if (Object.keys(images).length > 0) {
     imageUpload();
@@ -32,13 +29,6 @@ else {
 }
 
 if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
-
-function displayLogo() {
-  const logos = document.querySelectorAll(".logo-text");
-  logos.forEach((logo) => {
-    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-  });
-}
 
 logo.addEventListener("click", () => {
   sidebar.style.opacity = "1";
@@ -59,12 +49,14 @@ imageInput.addEventListener("change", (e) => {
 
   const image = e.target.files[0];
   const reader = new FileReader();
-  const data = {};
 
   reader.addEventListener("load", () => {
-    data.img = reader.result;
-    data.caption = userText.value;
-    data.order = order;
+    const data = {
+      key: currentUser[0].name,
+      img: reader.result,
+      caption: userText.value,
+      order: order,
+    };
 
     localStorage.setItem("order", JSON.stringify(++order));
 
@@ -76,12 +68,10 @@ imageInput.addEventListener("change", (e) => {
   flag = true;
 });
 
-shareBtn.addEventListener("click", postUpload);
-
-function postUpload() {
+shareBtn.addEventListener("click", function () {
   if (!userText.value) return alert("enter some text first");
 
-  header.classList.add("wrapper", "wrapper-active");
+  header.classList.add("wrapper");
   setTimeout(() => {
     const card = document.createElement("div");
     card.classList.add("same-content", "card");
@@ -90,67 +80,34 @@ function postUpload() {
       let imgList = JSON.parse(localStorage.getItem("images"))[
         currentUser[0].name
       ];
-      imgLatest = imgList[imgList.length - 1].img;
+      imgLatest = imgList[imgList.length - 1];
 
-      card.innerHTML = `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">${currentUser[0].name}</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${userText.value}</p>
-  </div>
-  <div class="upload-image">
-    <img src="${imgLatest}" alt="" />
-  </div>`;
+      card.innerHTML = imagePost(imgLatest);
 
-      userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
-      userText.value = "";
-
-      header.classList.remove("wrapper");
       flag = false;
+    } else {
+      const data = {
+        key: currentUser[0].name,
+        caption: userText.value,
+        order: order,
+      };
+      card.innerHTML = captionPost(data);
 
-      logos = document.querySelectorAll(".logo-text");
-      logos.forEach((logo) => {
-        logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-      });
-
-      return;
+      localStorage.setItem("order", JSON.stringify(++order));
+      images[currentUser[0].name].push(data);
+      localStorage.setItem("images", JSON.stringify(images));
     }
 
-    card.innerHTML = `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">Hamza</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${userText.value}</p>
-  </div>`;
-
-    const data = { caption: userText.value, order: order };
-    localStorage.setItem("order", JSON.stringify(++order));
-    images[currentUser[0].name].push(data);
-    localStorage.setItem("images", JSON.stringify(images));
-
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
-
     userText.value = "";
-
-    logos = document.querySelectorAll(".logo-text");
-    logos.forEach((logo) => {
-      logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-    });
-    header.classList.remove("wrapper-active");
+    displayLogo();
+    header.classList.remove("wrapper");
   }, 1500);
-}
+});
+
+home.addEventListener("click", () => imageUpload());
+
+profile.addEventListener("click", () => showProfile());
 
 function imageUpload() {
   let storedImages = JSON.parse(localStorage.getItem("images"));
@@ -161,7 +118,6 @@ function imageUpload() {
     let data = storedImages[key];
 
     data.forEach((val) => {
-      val.key = key;
       orderedImages.splice(val.order, 0, val);
     });
   }
@@ -171,61 +127,33 @@ function imageUpload() {
     card.classList.add("same-content", "card");
 
     if (!val.img) {
-      card.innerHTML += `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">${val.key}</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${val.caption}</p>
-  </div>`;
+      card.innerHTML += captionPost(val);
     } else {
-      card.innerHTML += `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">${val.key}</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${val.caption}</p>
-  </div>
-  <div class="upload-image">
-    <img src="${val.img}" alt="" />
-  </div>`;
+      card.innerHTML += imagePost(val);
     }
 
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
   });
 
-  logos = document.querySelectorAll(".logo-text");
-  logos.forEach((logo) => {
-    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
-  });
+  displayLogo();
 }
 
 function showProfile() {
   mainContent.innerHTML = `<div class="same-content user-input">
-  <div class="logo">
-    <p class="logo-text"></p>
-  </div>
-  <input
-    type="text"
-    class="user-text"
-    placeholder="what's on your mind!"
-  />
-  <div class="input-image-wrapper">
-    <label for="input-image">image</label>
-    <input type="file" name="" id="input-image" accept="image/*" />
-  </div>
-  <button class="share-btn">Share</button>
-</div>`;
+                          <div class="logo">
+                          <p class="logo-text"></p>
+                          </div>
+                          <input
+                            type="text"
+                            class="user-text"
+                            placeholder="what's on your mind!"
+                          />
+                          <div class="input-image-wrapper">
+                            <label for="input-image">image</label>
+                            <input type="file" name="" id="input-image" accept="image/*" />
+                          </div>
+                          <button class="share-btn">Share</button>
+                          </div>`;
 
   let storedImages = JSON.parse(localStorage.getItem("images"));
 
@@ -234,7 +162,6 @@ function showProfile() {
   let data = storedImages[currentUser[0].name];
 
   data.forEach((val) => {
-    val.key = currentUser[0].name;
     orderedImages.splice(val.order, 0, val);
   });
 
@@ -243,45 +170,52 @@ function showProfile() {
     card.classList.add("same-content", "card");
 
     if (!val.img) {
-      card.innerHTML += `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">${val.key}</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${val.caption}</p>
-  </div>`;
+      card.innerHTML += captionPost(val);
     } else {
-      card.innerHTML += `<div class="top-content">
-    <div class="profile-wrapper">
-      <div class="logo">
-        <p class="logo-text"></p>
-      </div>
-      <p class="profile-name">${val.key}</p>
-    </div>
-    <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-    <p>${val.caption}</p>
-  </div>
-  <div class="upload-image">
-    <img src="${val.img}" alt="" />
-  </div>`;
+      card.innerHTML += imagePost(val);
     }
 
     mainContent.appendChild(card);
   });
-  logos = document.querySelectorAll(".logo-text");
-  console.log(logos);
+  displayLogo();
+}
+
+function displayLogo() {
+  const logos = document.querySelectorAll(".logo-text");
   logos.forEach((logo) => {
     logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
   });
 }
 
-home.addEventListener("click", () => imageUpload());
+function imagePost(val) {
+  return `<div class="top-content">
+  <div class="profile-wrapper">
+  <div class="logo">
+  <p class="logo-text"></p>
+  </div>
+  <p class="profile-name">${val.key}</p>
+  </div>
+  <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <div class="caption">
+  <p>${val.caption}</p>
+  </div>
+  <div class="upload-image">
+  <img src="${val.img}" alt="" />
+  </div>`;
+}
 
-profile.addEventListener("click", () => showProfile());
+function captionPost(val) {
+  return `<div class="top-content">
+  <div class="profile-wrapper">
+  <div class="logo">
+  <p class="logo-text"></p>
+  </div>
+  <p class="profile-name">${val.name}</p>
+  </div>
+  <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <div class="caption">
+  <p>${val.caption}</p>
+  </div>`;
+}
