@@ -15,6 +15,7 @@ const modalUsername = document.querySelector("#modal-username");
 const modalEmail = document.querySelector("#modal-email");
 const modalPassword = document.querySelector("#modal-password");
 const modalImage = document.querySelector("#modal-image");
+const applyBtn = document.querySelector(".apply-btn");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -239,24 +240,34 @@ modalImage.addEventListener("change", (e) => {
   const reader = new FileReader();
 
   reader.addEventListener("load", () => {
-    // const data = {
-    //   key: currentUser[0].name,
-    //   img: reader.result,
-    //   caption: userText.value,
-    //   order: order,
-    // };
-    // localStorage.setItem("order", JSON.stringify(++order));
-    // images[currentUser[0].name].push(data);
-    // localStorage.setItem("images", JSON.stringify(images));
     const img = reader.result;
 
-    let modalLogo = document.querySelector(".modal-wrapper .logo-text");
-    modalLogo.remove();
-    let parentLogo = document.querySelector(".modal-wrapper .logo");
-    const newImage = document.createElement("img");
-    newImage.src = img;
-    parentLogo.appendChild(newImage);
+    if (!("img" in currentUser[0])) {
+      currentUser[0].img = img;
+
+      let modalLogo = document.querySelector(".modal-wrapper .logo-text");
+      modalLogo.remove();
+      let parentLogo = document.querySelector(".modal-wrapper .logo");
+      const newImage = document.createElement("img");
+      newImage.src = img;
+      parentLogo.appendChild(newImage);
+    } else {
+      const imgInModal = document.querySelector(".modal-wrapper img");
+      imgInModal.src = img;
+    }
   });
 
   if (image) reader.readAsDataURL(image);
+});
+
+applyBtn.addEventListener("click", () => {
+  const user = {
+    name: modalUsername.value,
+    email: modalEmail.value,
+    password: modalPassword.value,
+  };
+
+  currentUser[0] = user;
+
+  localStorage.setItem("current user", JSON.stringify(currentUser));
 });

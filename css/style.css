@@ -492,16 +492,15 @@ a {
 }
 
 .modal-wrapper .logo {
-  height: 120px;
-  width: 120px;
+  height: 150px;
+  width: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 2px solid; */
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .modal-wrapper img {
-  clip-path: circle(50% at 50% 50%);
-  background-color: #000;
   height: 100%;
 }
