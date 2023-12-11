@@ -35,7 +35,7 @@
     </header>
 
     <div class="sidebar un-active-sidebar">
-      <a class="setting" href="#">Profile</a>
+      <a class="" href="#">Profile</a>
       <a class="setting" href="#">Settings</a>
       <button class="logout-btn">Log Out</button>
     </div>
@@ -210,8 +210,41 @@
     </section>
 
     <dialog>
-      <div class="wrapper">
-        <div class="form"></div>
+      <div class="modal-wrapper">
+        <div class="logo">
+          <p class="logo-text"></p>
+        </div>
+        <div class="input-image-wrapper">
+          <label for="modal-image">upload image</label>
+          <input type="file" name="" id="modal-image" accept="image/*" />
+        </div>
+        <form action="">
+          <input
+            type="text"
+            name=""
+            id="modal-username"
+            placeholder="Username"
+            required
+          />
+          <input
+            type="email"
+            name=""
+            id="modal-email"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="text"
+            name=""
+            id="modal-password"
+            placeholder="Password"
+            required
+          />
+          <button class="apply-btn">Apply Changes</button>
+          <div class="sub-text">
+            <a class="leave-link">Leave</a>
+          </div>
+        </form>
       </div>
     </dialog>
 

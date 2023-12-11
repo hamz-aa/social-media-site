@@ -10,6 +10,11 @@ const userInput = document.querySelector(".user-input");
 const home = document.querySelector(".home");
 const profile = document.querySelector(".profile");
 const header = document.querySelector("header");
+const modal = document.querySelector("dialog");
+const modalUsername = document.querySelector("#modal-username");
+const modalEmail = document.querySelector("#modal-email");
+const modalPassword = document.querySelector("#modal-password");
+const modalImage = document.querySelector("#modal-image");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -29,6 +34,10 @@ else {
 }
 
 if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
+
+modalUsername.value = currentUser[0].name;
+modalEmail.value = currentUser[0].email;
+modalPassword.value = currentUser[0].password;
 
 logo.addEventListener("click", () => {
   sidebar.style.opacity = "1";
@@ -219,3 +228,35 @@ function captionPost(val) {
   <p>${val.caption}</p>
   </div>`;
 }
+
+setting.addEventListener("click", () => {
+  modal.showModal();
+  document.body.style.overflow = "hidden";
+});
+
+modalImage.addEventListener("change", (e) => {
+  const image = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener("load", () => {
+    // const data = {
+    //   key: currentUser[0].name,
+    //   img: reader.result,
+    //   caption: userText.value,
+    //   order: order,
+    // };
+    // localStorage.setItem("order", JSON.stringify(++order));
+    // images[currentUser[0].name].push(data);
+    // localStorage.setItem("images", JSON.stringify(images));
+    const img = reader.result;
+
+    let modalLogo = document.querySelector(".modal-wrapper .logo-text");
+    modalLogo.remove();
+    let parentLogo = document.querySelector(".modal-wrapper .logo");
+    const newImage = document.createElement("img");
+    newImage.src = img;
+    parentLogo.appendChild(newImage);
+  });
+
+  if (image) reader.readAsDataURL(image);
+});

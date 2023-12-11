@@ -357,7 +357,7 @@ dialog {
   gap: 10px;
 }
 
-.user-input input[type="file"] {
+input[type="file"] {
   display: none;
 }
 
@@ -465,4 +465,43 @@ header.wrapper {
 
 a {
   cursor: pointer;
+}
+
+:modal::backdrop {
+  background-color: #fff;
+}
+
+:modal {
+  padding: 2em;
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper .input-image-wrapper label {
+  border: 2px solid;
+  padding: 0.3em 0.4em;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin-top: 20px;
+}
+
+.modal-wrapper .logo {
+  height: 120px;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 2px solid; */
+}
+
+.modal-wrapper img {
+  clip-path: circle(50% at 50% 50%);
+  background-color: #000;
+  height: 100%;
 }
