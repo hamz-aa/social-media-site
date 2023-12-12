@@ -270,4 +270,6 @@ applyBtn.addEventListener("click", () => {
   currentUser[0] = user;
 
   localStorage.setItem("current user", JSON.stringify(currentUser));
+
+  window.location.reload();
 });
