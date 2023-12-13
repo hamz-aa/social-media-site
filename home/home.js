@@ -29,6 +29,19 @@ if (!currentUser) window.location.href = "../index.html";
 else {
   displayLogo();
 
+  // if (currentUser[0].img) {
+  //   let modalLogo = document.querySelectorAll(".logo-text");
+  //   modalLogo.forEach((val) => {
+  //     val.remove();
+  //   });
+  //   let parentLogo = document.querySelectorAll(".logo");
+  //   parentLogo.forEach((val) => {
+  //     const newImage = document.createElement("img");
+  //     newImage.src = currentUser[0].img;
+  //     val.appendChild(newImage);
+  //   });
+  // }
+
   if (Object.keys(images).length > 0) {
     imageUpload();
   }
@@ -235,6 +248,8 @@ setting.addEventListener("click", () => {
   document.body.style.overflow = "hidden";
 });
 
+let modalFlag = false;
+
 modalImage.addEventListener("change", (e) => {
   const image = e.target.files[0];
   const reader = new FileReader();
@@ -258,6 +273,7 @@ modalImage.addEventListener("change", (e) => {
   });
 
   if (image) reader.readAsDataURL(image);
+  flag = true;
 });
 
 applyBtn.addEventListener("click", () => {
@@ -266,6 +282,10 @@ applyBtn.addEventListener("click", () => {
     email: modalEmail.value,
     password: modalPassword.value,
   };
+  if (flag) {
+    user.img = currentUser[0].img;
+    flag = false;
+  }
 
   currentUser[0] = user;
 
@@ -273,3 +293,16 @@ applyBtn.addEventListener("click", () => {
 
   window.location.reload();
 });
+
+if (currentUser[0].img) {
+  let modalLogo = document.querySelectorAll(".logo-text");
+  modalLogo.forEach((val) => {
+    val.remove();
+  });
+  let parentLogo = document.querySelectorAll(".logo");
+  parentLogo.forEach((val) => {
+    const newImage = document.createElement("img");
+    newImage.src = currentUser[0].img;
+    val.appendChild(newImage);
+  });
+}
