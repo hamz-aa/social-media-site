@@ -306,14 +306,19 @@ applyBtn.addEventListener("click", () => {
 
   profileImageUpload();
 
-  window.location.reload();
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    modal.close();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
 });
 
 leaveBtn.addEventListener("click", () => {
   header.classList.add("wrapper-active");
   setTimeout(() => {
     modal.close();
-    document.body.style.overflow = "hidden";
     sidebar.classList.replace("active-sidebar", "un-active-sidebar");
     header.classList.remove("wrapper-active");
     window.location.reload();
