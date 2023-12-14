@@ -12,7 +12,6 @@ loginBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
   const users = JSON.parse(localStorage.getItem("users"));
-  const currentUser = [];
 
   if (!users) return alert("user not found!");
   if (!username.value || !password.value) return alert("Fill all fields");
@@ -30,13 +29,11 @@ loginBtn.addEventListener("click", (e) => {
     return;
   }
 
-  const user = {
+  const currentUser = {
     name: username.value,
     password: password.value,
     email: email,
   };
-
-  currentUser.push(user);
 
   localStorage.setItem("current user", JSON.stringify(currentUser));
 

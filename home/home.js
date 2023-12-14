@@ -1,4 +1,4 @@
-const logo = document.querySelector(".logo-text");
+const logo = document.querySelector(".logo");
 const sidebar = document.querySelector(".sidebar");
 const logoutBtn = document.querySelector(".logout-btn");
 const setting = document.querySelector(".setting");
@@ -16,6 +16,7 @@ const modalEmail = document.querySelector("#modal-email");
 const modalPassword = document.querySelector("#modal-password");
 const modalImage = document.querySelector("#modal-image");
 const applyBtn = document.querySelector(".apply-btn");
+const leaveBtn = document.querySelector(".leave-link");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -29,29 +30,16 @@ if (!currentUser) window.location.href = "../index.html";
 else {
   displayLogo();
 
-  // if (currentUser[0].img) {
-  //   let modalLogo = document.querySelectorAll(".logo-text");
-  //   modalLogo.forEach((val) => {
-  //     val.remove();
-  //   });
-  //   let parentLogo = document.querySelectorAll(".logo");
-  //   parentLogo.forEach((val) => {
-  //     const newImage = document.createElement("img");
-  //     newImage.src = currentUser[0].img;
-  //     val.appendChild(newImage);
-  //   });
-  // }
-
   if (Object.keys(images).length > 0) {
     imageUpload();
   }
 }
 
-if (!(currentUser[0].name in images)) images[currentUser[0].name] = [];
+if (!(currentUser.name in images)) images[currentUser.name] = [];
 
-modalUsername.value = currentUser[0].name;
-modalEmail.value = currentUser[0].email;
-modalPassword.value = currentUser[0].password;
+modalUsername.value = currentUser.name;
+modalEmail.value = currentUser.email;
+modalPassword.value = currentUser.password;
 
 logo.addEventListener("click", () => {
   sidebar.style.opacity = "1";
@@ -75,7 +63,7 @@ imageInput.addEventListener("change", (e) => {
 
   reader.addEventListener("load", () => {
     const data = {
-      key: currentUser[0].name,
+      key: currentUser.name,
       img: reader.result,
       caption: userText.value,
       order: order,
@@ -83,7 +71,7 @@ imageInput.addEventListener("change", (e) => {
 
     localStorage.setItem("order", JSON.stringify(++order));
 
-    images[currentUser[0].name].push(data);
+    images[currentUser.name].push(data);
     localStorage.setItem("images", JSON.stringify(images));
   });
 
@@ -94,14 +82,14 @@ imageInput.addEventListener("change", (e) => {
 shareBtn.addEventListener("click", function () {
   if (!userText.value) return alert("enter some text first");
 
-  header.classList.add("wrapper");
+  header.classList.add("wrapper-active");
   setTimeout(() => {
     const card = document.createElement("div");
     card.classList.add("same-content", "card");
 
     if (userText.value && localStorage.getItem("images") && flag) {
       let imgList = JSON.parse(localStorage.getItem("images"))[
-        currentUser[0].name
+        currentUser.name
       ];
       imgLatest = imgList[imgList.length - 1];
 
@@ -110,21 +98,21 @@ shareBtn.addEventListener("click", function () {
       flag = false;
     } else {
       const data = {
-        key: currentUser[0].name,
+        key: currentUser.name,
         caption: userText.value,
         order: order,
       };
       card.innerHTML = captionPost(data);
 
       localStorage.setItem("order", JSON.stringify(++order));
-      images[currentUser[0].name].push(data);
+      images[currentUser.name].push(data);
       localStorage.setItem("images", JSON.stringify(images));
     }
 
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
     userText.value = "";
     displayLogo();
-    header.classList.remove("wrapper");
+    window.location.reload();
   }, 1500);
 });
 
@@ -182,7 +170,7 @@ function showProfile() {
 
   let orderedImages = [];
 
-  let data = storedImages[currentUser[0].name];
+  let data = storedImages[currentUser.name];
 
   data.forEach((val) => {
     orderedImages.splice(val.order, 0, val);
@@ -206,7 +194,7 @@ function showProfile() {
 function displayLogo() {
   const logos = document.querySelectorAll(".logo-text");
   logos.forEach((logo) => {
-    logo.textContent = currentUser[0].name.slice(0, 2).toUpperCase();
+    logo.textContent = currentUser.name.slice(0, 2).toUpperCase();
   });
 }
 
@@ -243,9 +231,36 @@ function captionPost(val) {
   </div>`;
 }
 
+function profileImageUpload() {
+  if (currentUser.img) {
+    let modalLogo = document.querySelectorAll(".logo-text");
+    modalLogo.forEach((val) => {
+      val.remove();
+    });
+    let parentLogo = document.querySelectorAll(".logo");
+    parentLogo.forEach((val) => {
+      const newImage = document.createElement("img");
+      newImage.src = currentUser.img;
+      val.appendChild(newImage);
+
+      if (val.classList.contains("main-logo"))
+        val.classList.add("main-img-logo");
+      else val.classList.add("img-logo");
+    });
+  }
+}
+
 setting.addEventListener("click", () => {
-  modal.showModal();
-  document.body.style.overflow = "hidden";
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    modal.showModal();
+    document.body.style.overflow = "hidden";
+    header.classList.add("wrapper-un-active");
+    header.classList.remove("wrapper-active");
+    setTimeout(() => {
+      header.classList.remove("wrapper-un-active");
+    }, 1500);
+  }, 1500);
 });
 
 let modalFlag = false;
@@ -257,8 +272,8 @@ modalImage.addEventListener("change", (e) => {
   reader.addEventListener("load", () => {
     const img = reader.result;
 
-    if (!("img" in currentUser[0])) {
-      currentUser[0].img = img;
+    if (!("img" in currentUser)) {
+      currentUser.img = img;
 
       let modalLogo = document.querySelector(".modal-wrapper .logo-text");
       modalLogo.remove();
@@ -283,26 +298,26 @@ applyBtn.addEventListener("click", () => {
     password: modalPassword.value,
   };
   if (flag) {
-    user.img = currentUser[0].img;
+    user.img = currentUser.img;
     flag = false;
   }
 
-  currentUser[0] = user;
+  localStorage.setItem("current user", JSON.stringify(user));
 
-  localStorage.setItem("current user", JSON.stringify(currentUser));
+  profileImageUpload();
 
   window.location.reload();
 });
 
-if (currentUser[0].img) {
-  let modalLogo = document.querySelectorAll(".logo-text");
-  modalLogo.forEach((val) => {
-    val.remove();
-  });
-  let parentLogo = document.querySelectorAll(".logo");
-  parentLogo.forEach((val) => {
-    const newImage = document.createElement("img");
-    newImage.src = currentUser[0].img;
-    val.appendChild(newImage);
-  });
-}
+leaveBtn.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    modal.close();
+    document.body.style.overflow = "hidden";
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
+});
+
+profileImageUpload();
