@@ -136,7 +136,7 @@ function imageUpload() {
 
   orderedImages.forEach((val) => {
     const card = document.createElement("div");
-    card.classList.add("same-content", "card");
+    card.classList.add("same-content", "card", `${val.key}`);
 
     if (!val.img) {
       card.innerHTML += captionPost(val);
@@ -223,7 +223,7 @@ function captionPost(val) {
   <div class="logo">
   <p class="logo-text"></p>
   </div>
-  <p class="profile-name">${val.name}</p>
+  <p class="profile-name">${val.key}</p>
   </div>
   <i class="fa-solid fa-ellipsis"></i>
   </div>
@@ -233,22 +233,43 @@ function captionPost(val) {
 }
 
 function profileImageUpload() {
-  if (currentUser.img) {
-    let modalLogo = document.querySelectorAll(".logo-text");
-    modalLogo.forEach((val) => {
-      val.remove();
-    });
-    let parentLogo = document.querySelectorAll(".logo");
-    parentLogo.forEach((val) => {
-      const newImage = document.createElement("img");
-      newImage.src = currentUser.img;
-      val.appendChild(newImage);
+  users.forEach((user) => {
+    if (user.img) {
+      let modalLogo = document.querySelectorAll(".logo-text");
+      modalLogo.forEach((val) => {
+        val.remove();
+      });
+      let parentLogo = document.querySelectorAll(`.${user.name} .logo`);
+      parentLogo.forEach((val) => {
+        const newImage = document.createElement("img");
+        newImage.src = user.img;
+        val.appendChild(newImage);
 
-      if (val.classList.contains("main-logo"))
-        val.classList.add("main-img-logo");
-      else val.classList.add("img-logo");
-    });
-  }
+        if (val.classList.contains("main-logo"))
+          val.classList.add("main-img-logo");
+        else val.classList.add("img-logo");
+      });
+    }
+  });
+}
+
+function userLogoUpload() {
+  users.forEach((user) => {
+    if (user.img) {
+      if (user.name === currentUser.name) {
+        const userLogo = document.querySelectorAll(".user-logo");
+        userLogo.forEach((val) => {
+          const newImage = document.createElement("img");
+          newImage.src = user.img;
+          val.appendChild(newImage);
+
+          if (val.classList.contains("main-logo"))
+            val.classList.add("main-img-logo");
+          else val.classList.add("img-logo");
+        });
+      }
+    }
+  });
 }
 
 setting.addEventListener("click", () => {
@@ -272,8 +293,6 @@ modalImage.addEventListener("change", (e) => {
     const img = reader.result;
 
     if (!("img" in currentUser)) {
-      currentUser.img = img;
-
       let modalLogo = document.querySelector(".modal-wrapper .logo-text");
       modalLogo.remove();
       let parentLogo = document.querySelector(".modal-wrapper .logo");
@@ -284,6 +303,7 @@ modalImage.addEventListener("change", (e) => {
       const imgInModal = document.querySelector(".modal-wrapper img");
       imgInModal.src = img;
     }
+    currentUser.img = img;
   });
 
   if (image) reader.readAsDataURL(image);
@@ -350,3 +370,4 @@ leaveBtn.addEventListener("click", () => {
 });
 
 profileImageUpload();
+userLogoUpload();
