@@ -264,8 +264,6 @@ setting.addEventListener("click", () => {
   }, 1500);
 });
 
-let modalFlag = false;
-
 modalImage.addEventListener("change", (e) => {
   const image = e.target.files[0];
   const reader = new FileReader();
@@ -289,7 +287,6 @@ modalImage.addEventListener("change", (e) => {
   });
 
   if (image) reader.readAsDataURL(image);
-  flag = true;
 });
 
 applyBtn.addEventListener("click", () => {
@@ -298,9 +295,8 @@ applyBtn.addEventListener("click", () => {
     email: modalEmail.value,
     password: modalPassword.value,
   };
-  if (flag) {
+  if (currentUser.img) {
     user.img = currentUser.img;
-    flag = false;
   }
 
   if (modalUsername.value !== currentUser.name) {
@@ -311,7 +307,8 @@ applyBtn.addEventListener("click", () => {
         for (let obj of images[currentUser.name]) {
           obj.key = modalUsername.value;
         }
-        // let {currentUser.name: modalUsername.value, ...rest} = images;
+        images[modalUsername.value] = images[currentUser.name];
+        delete images[currentUser.name];
         localStorage.setItem("images", JSON.stringify(images));
       }
     }
