@@ -25,6 +25,7 @@ let flag = false;
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || {};
 let order = parseInt(JSON.parse(localStorage.getItem("order"))) || 0;
+const users = JSON.parse(localStorage.getItem("users"));
 
 if (!currentUser) window.location.href = "../index.html";
 else {
@@ -300,6 +301,32 @@ applyBtn.addEventListener("click", () => {
   if (flag) {
     user.img = currentUser.img;
     flag = false;
+  }
+
+  if (modalUsername.value !== currentUser.name) {
+    let exists = users.find((user) => user.name === modalUsername.value);
+    if (exists) return alert("username already exists");
+    else {
+      if (images) {
+        for (let obj of images[currentUser.name]) {
+          obj.key = modalUsername.value;
+        }
+        // let {currentUser.name: modalUsername.value, ...rest} = images;
+        localStorage.setItem("images", JSON.stringify(images));
+      }
+    }
+  }
+  if (modalEmail.value !== currentUser.email) {
+    let exists = users.find((user) => user.email === modalEmail.value);
+    if (exists) return alert("user email already exists");
+  }
+
+  for (let i in users) {
+    if (users[i].name === currentUser.name) {
+      users[i] = user;
+      localStorage.setItem("users", JSON.stringify(users));
+      break;
+    }
   }
 
   localStorage.setItem("current user", JSON.stringify(user));
