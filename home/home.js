@@ -23,15 +23,14 @@ userText.value = "";
 let flag = false;
 
 const currentUser = JSON.parse(localStorage.getItem("current user"));
-const images = JSON.parse(localStorage.getItem("images")) || {};
-let order = parseInt(JSON.parse(localStorage.getItem("order"))) || 0;
+const images = JSON.parse(localStorage.getItem("images")) || [];
 const users = JSON.parse(localStorage.getItem("users"));
 
 if (!currentUser) window.location.href = "../index.html";
 else {
   displayLogo();
 
-  if (Object.keys(images).length > 0) {
+  if (images.length > 0) {
     imageUpload();
   }
 }
@@ -67,12 +66,9 @@ imageInput.addEventListener("change", (e) => {
       key: currentUser.name,
       img: reader.result,
       caption: userText.value,
-      order: order,
     };
 
-    localStorage.setItem("order", JSON.stringify(++order));
-
-    images[currentUser.name].push(data);
+    images.push(data);
     localStorage.setItem("images", JSON.stringify(images));
   });
 
@@ -89,24 +85,19 @@ shareBtn.addEventListener("click", function () {
     card.classList.add("same-content", "card");
 
     if (userText.value && localStorage.getItem("images") && flag) {
-      let imgList = JSON.parse(localStorage.getItem("images"))[
-        currentUser.name
-      ];
-      imgLatest = imgList[imgList.length - 1];
+      let imgList = JSON.parse(localStorage.getItem("images"));
 
-      card.innerHTML = imagePost(imgLatest);
+      card.innerHTML = imagePost(imgList[imgList.length - 1]);
 
       flag = false;
     } else {
       const data = {
         key: currentUser.name,
         caption: userText.value,
-        order: order,
       };
       card.innerHTML = captionPost(data);
 
-      localStorage.setItem("order", JSON.stringify(++order));
-      images[currentUser.name].push(data);
+      images.push(data);
       localStorage.setItem("images", JSON.stringify(images));
     }
 
@@ -117,24 +108,26 @@ shareBtn.addEventListener("click", function () {
   }, 1500);
 });
 
-home.addEventListener("click", () => imageUpload());
+home.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    header.classList.add("wrapper-un-active");
+    header.classList.remove("wrapper-active");
+    setTimeout(() => {
+      header.classList.remove("wrapper-un-active");
+    }, 1500);
+    home.classList.add("active-anchor");
+    profile.classList.remove("active-anchor");
+    window.location.reload();
+  }, 1500);
+});
 
 profile.addEventListener("click", () => showProfile());
 
 function imageUpload() {
   let storedImages = JSON.parse(localStorage.getItem("images"));
 
-  let orderedImages = [];
-
-  for (key of Object.keys(storedImages)) {
-    let data = storedImages[key];
-
-    data.forEach((val) => {
-      orderedImages.splice(val.order, 0, val);
-    });
-  }
-
-  orderedImages.forEach((val) => {
+  storedImages.forEach((val) => {
     const card = document.createElement("div");
     card.classList.add("same-content", "card", `${val.key}`);
 
@@ -151,8 +144,10 @@ function imageUpload() {
 }
 
 function showProfile() {
-  mainContent.innerHTML = `<div class="same-content user-input">
-                          <div class="logo">
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    mainContent.innerHTML = `<div class="same-content user-input">
+                          <div class="logo user-logo">
                           <p class="logo-text"></p>
                           </div>
                           <input
@@ -167,29 +162,32 @@ function showProfile() {
                           <button class="share-btn">Share</button>
                           </div>`;
 
-  let storedImages = JSON.parse(localStorage.getItem("images"));
+    let storedImages = JSON.parse(localStorage.getItem("images"));
 
-  let orderedImages = [];
+    storedImages.reverse().forEach((val) => {
+      if (val.key === currentUser.name) {
+        const card = document.createElement("div");
+        card.classList.add("same-content", "card", `${val.key}`);
 
-  let data = storedImages[currentUser.name];
+        if (!val.img) {
+          card.innerHTML += captionPost(val);
+        } else {
+          card.innerHTML += imagePost(val);
+        }
 
-  data.forEach((val) => {
-    orderedImages.splice(val.order, 0, val);
-  });
-
-  orderedImages.reverse().forEach((val) => {
-    const card = document.createElement("div");
-    card.classList.add("same-content", "card");
-
-    if (!val.img) {
-      card.innerHTML += captionPost(val);
-    } else {
-      card.innerHTML += imagePost(val);
-    }
-
-    mainContent.appendChild(card);
-  });
-  displayLogo();
+        mainContent.appendChild(card);
+      }
+    });
+    displayLogo();
+    currentUserProfileImages();
+    header.classList.add("wrapper-un-active");
+    header.classList.remove("wrapper-active");
+    setTimeout(() => {
+      header.classList.remove("wrapper-un-active");
+    }, 1500);
+    profile.classList.add("active-anchor");
+    home.classList.remove("active-anchor");
+  }, 1500);
 }
 
 function displayLogo() {
@@ -230,6 +228,36 @@ function captionPost(val) {
   <div class="caption">
   <p>${val.caption}</p>
   </div>`;
+}
+
+function currentUserProfileImages() {
+  users.forEach((user) => {
+    if (user.img && user.name === currentUser.name) {
+      let modalLogo = document.querySelectorAll(".logo-text");
+      modalLogo.forEach((val) => {
+        val.remove();
+      });
+      let parentLogo = document.querySelectorAll(`.${currentUser.name} .logo`);
+      parentLogo.forEach((val) => {
+        const newImage = document.createElement("img");
+        newImage.src = user.img;
+        val.appendChild(newImage);
+
+        if (val.classList.contains("main-logo"))
+          val.classList.add("main-img-logo");
+        else val.classList.add("img-logo");
+      });
+
+      const userLogo = document.querySelector(".main-content .user-logo");
+      const newImage = document.createElement("img");
+      newImage.src = user.img;
+      userLogo.appendChild(newImage);
+
+      if (userLogo.classList.contains("main-logo"))
+        userLogo.classList.add("main-img-logo");
+      else userLogo.classList.add("img-logo");
+    }
+  });
 }
 
 function profileImageUpload() {

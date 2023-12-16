@@ -453,6 +453,10 @@ header.wrapper {
   width: 100%;
 }
 
+.wrapper.wrapper-un-active::before {
+  background-color: transparent;
+}
+
 .site-logo {
   width: 60px;
   height: 60px;
