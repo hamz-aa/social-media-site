@@ -17,8 +17,6 @@ const modalPassword = document.querySelector("#modal-password");
 const modalImage = document.querySelector("#modal-image");
 const applyBtn = document.querySelector(".apply-btn");
 const leaveBtn = document.querySelector(".leave-link");
-const editIcon = document.querySelector("i");
-const postBtn = document.querySelector(".post-btn-wrapper .post-btn");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -27,6 +25,7 @@ let flag = false;
 const currentUser = JSON.parse(localStorage.getItem("current user"));
 const images = JSON.parse(localStorage.getItem("images")) || [];
 const users = JSON.parse(localStorage.getItem("users"));
+let id = JSON.parse(localStorage.getItem("id")) || 0;
 
 if (!currentUser) window.location.href = "../index.html";
 else {
@@ -64,7 +63,9 @@ imageInput.addEventListener("change", (e) => {
   const reader = new FileReader();
 
   reader.addEventListener("load", () => {
+    ++id;
     const data = {
+      id: id,
       key: currentUser.name,
       img: reader.result,
       caption: userText.value,
@@ -72,6 +73,7 @@ imageInput.addEventListener("change", (e) => {
 
     images.push(data);
     localStorage.setItem("images", JSON.stringify(images));
+    localStorage.setItem("id", JSON.stringify(id));
   });
 
   if (image) reader.readAsDataURL(image);
@@ -93,7 +95,9 @@ shareBtn.addEventListener("click", function () {
 
       flag = false;
     } else {
+      id++;
       const data = {
+        id: id,
         key: currentUser.name,
         caption: userText.value,
       };
@@ -101,6 +105,7 @@ shareBtn.addEventListener("click", function () {
 
       images.push(data);
       localStorage.setItem("images", JSON.stringify(images));
+      localStorage.setItem("id", JSON.stringify(id));
     }
 
     userInput.parentNode.insertBefore(card, userInput.nextElementSibling);
@@ -200,36 +205,81 @@ function displayLogo() {
 }
 
 function imagePost(val) {
-  return `<div class="top-content">
-  <div class="profile-wrapper">
-  <div class="logo">
-  <p class="logo-text"></p>
-  </div>
-  <p class="profile-name">${val.key}</p>
-  </div>
-  <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-  <p>${val.caption}</p>
-  </div>
-  <div class="upload-image">
-  <img src="${val.img}" alt="" />
-  </div>`;
+  if (val.key === currentUser.name) {
+    return `<div class="top-content">
+    <div class="profile-wrapper">
+    <div class="logo">
+    <p class="logo-text"></p>
+    </div>
+    <p class="profile-name">${val.key}</p>
+    </div>
+    <div class="post-btn-wrapper">
+    <i class="fa-solid fa-ellipsis" onclick="postButtonHandler(event)"></i>
+    <div class="post-btn" id="${val.id}">
+      <button>Edit</button>
+      <button onclick="deleteButtonHandler(event)">Delete</button>
+    </div>
+    </div>
+    </div>
+    <div class="caption">
+    <p>${val.caption}</p>
+    </div>
+    <div class="upload-image">
+    <img src="${val.img}" alt="" />
+    </div>`;
+  } else {
+    return `<div class="top-content">
+    <div class="profile-wrapper">
+    <div class="logo">
+    <p class="logo-text"></p>
+    </div>
+    <p class="profile-name">${val.key}</p>
+    </div>
+    <i class="fa-solid fa-ellipsis"></i>
+    </div>
+    <div class="caption">
+    <p>${val.caption}</p>
+    </div>
+    <div class="upload-image">
+    <img src="${val.img}" alt="" />
+    </div>`;
+  }
 }
 
 function captionPost(val) {
-  return `<div class="top-content">
-  <div class="profile-wrapper">
-  <div class="logo">
-  <p class="logo-text"></p>
-  </div>
-  <p class="profile-name">${val.key}</p>
-  </div>
-  <i class="fa-solid fa-ellipsis"></i>
-  </div>
-  <div class="caption">
-  <p>${val.caption}</p>
-  </div>`;
+  if (val.key === currentUser.name) {
+    return `<div class="top-content">
+    <div class="profile-wrapper">
+    <div class="logo">
+    <p class="logo-text"></p>
+    </div>
+    <p class="profile-name">${val.key}</p>
+    </div>
+    <div class="post-btn-wrapper">
+    <i class="fa-solid fa-ellipsis" onclick="postButtonHandler(event)"></i>
+    <div class="post-btn" id="${val.id}">
+      <button>Edit</button>
+      <button onclick="deleteButtonHandler(event)">Delete</button>
+    </div>
+    </div>
+    </div>
+    <div class="caption">
+    <p>${val.caption}</p>
+    </div>`;
+  } else {
+    return `<div class="top-content">
+    <div class="profile-wrapper">
+    <div class="logo">
+    <p class="logo-text"></p>
+    </div>
+    <p class="profile-name">${val.key}</p>
+    </div>
+    <i class="fa-solid fa-ellipsis"></i>
+    </div>
+    <div class="caption">
+    <p>${val.caption}</p>
+    </div>`;
+  }
 }
 
 function currentUserProfileImages() {
@@ -399,9 +449,24 @@ leaveBtn.addEventListener("click", () => {
   }, 1500);
 });
 
-// editIcon.addEventListener("click", () => {
-//   postBtn.classList.toggle("active");
-// });
+function postButtonHandler(e) {
+  e.target.nextElementSibling.classList.toggle("active");
+}
+
+function deleteButtonHandler(event) {
+  for (let image in images) {
+    if (event.currentTarget.parentNode.id == images[image].id) {
+      header.classList.add("wrapper-active");
+      setTimeout(() => {
+        images.splice(image, 1);
+        localStorage.setItem("images", JSON.stringify(images));
+        sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+        header.classList.remove("wrapper-active");
+        window.location.reload();
+      }, 1500);
+    }
+  }
+}
 
 profileImageUpload();
 userLogoUpload();
