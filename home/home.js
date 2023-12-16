@@ -17,6 +17,8 @@ const modalPassword = document.querySelector("#modal-password");
 const modalImage = document.querySelector("#modal-image");
 const applyBtn = document.querySelector(".apply-btn");
 const leaveBtn = document.querySelector(".leave-link");
+const editIcon = document.querySelector("i");
+const postBtn = document.querySelector(".post-btn-wrapper .post-btn");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -396,6 +398,10 @@ leaveBtn.addEventListener("click", () => {
     window.location.reload();
   }, 1500);
 });
+
+// editIcon.addEventListener("click", () => {
+//   postBtn.classList.toggle("active");
+// });
 
 profileImageUpload();
 userLogoUpload();
