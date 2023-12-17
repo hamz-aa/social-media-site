@@ -26,7 +26,7 @@
         <div class="nav-content">
           <ul>
             <li><a class="active-anchor home" href="#">Home</a></li>
-            <li><a href="#" class="profile">My Profile</a></li>
+            <li><a href="#" class="profile nav-profile">My Profile</a></li>
             <li><a href="#" class="message">Message</a></li>
             <li><a href="#" class="notification">Notification</a></li>
           </ul>
@@ -35,133 +35,135 @@
     </header>
 
     <div class="sidebar un-active-sidebar">
-      <a class="" href="#">Profile</a>
+      <a class="profile" href="#">Profile</a>
       <a class="setting" href="#">Settings</a>
       <button class="logout-btn">Log Out</button>
     </div>
 
-    <section class="container content">
-      <div class="left-content">
-        <div class="content-1 same-content">
-          <p class="content-heading">Pages You May Like</p>
-          <ul>
-            <li>
-              <img src="../assets/travel-the-world.jpeg" alt="" />
-              <p>Travel The World</p>
-            </li>
-            <li>
-              <img src="../assets/fitness.jpeg" alt="" />
-              <p>Fitness Freaks</p>
-            </li>
-            <li>
-              <img src="../assets/food-court.jpeg" alt="" />
-              <p>Food Court</p>
-            </li>
-            <li>
-              <img src="../assets/science.jpeg" alt="" />
-              <p>Science of the Universe</p>
-            </li>
-            <li>
-              <img src="../assets/theatre.jpeg" alt="" />
-              <p>Rolling Theatre</p>
-            </li>
-          </ul>
-        </div>
-        <div class="content-2 same-content">
-          <p class="content-heading">Latest News</p>
-          <ul>
-            <li>
-              <img src="../assets/news.png" alt="" />
-              <p>Breaking News: Local & Alerts</p>
-            </li>
-            <li>
-              <img src="../assets/latest-updates.jpeg" alt="" />
-              <p>Latest updates from around the world</p>
-            </li>
-            <li>
-              <img src="../assets/world-news.jpeg" alt="" />
-              <p>News from all around the world</p>
-            </li>
-            <li>
-              <img src="../assets/streaming-now.jpeg" alt="" />
-              <p>Streaming now live!</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="main-content">
-        <div class="same-content user-input">
-          <div class="logo user-logo">
-            <p class="logo-text"></p>
+    <section class="content">
+      <div class="container content-container">
+        <div class="left-content">
+          <div class="content-1 same-content">
+            <p class="content-heading">Pages You May Like</p>
+            <ul>
+              <li>
+                <img src="../assets/travel-the-world.jpeg" alt="" />
+                <p>Travel The World</p>
+              </li>
+              <li>
+                <img src="../assets/fitness.jpeg" alt="" />
+                <p>Fitness Freaks</p>
+              </li>
+              <li>
+                <img src="../assets/food-court.jpeg" alt="" />
+                <p>Food Court</p>
+              </li>
+              <li>
+                <img src="../assets/science.jpeg" alt="" />
+                <p>Science of the Universe</p>
+              </li>
+              <li>
+                <img src="../assets/theatre.jpeg" alt="" />
+                <p>Rolling Theatre</p>
+              </li>
+            </ul>
           </div>
-          <input
-            type="text"
-            class="user-text"
-            placeholder="what's on your mind!"
-          />
-          <div class="input-image-wrapper">
-            <label for="input-image">image</label>
-            <input type="file" name="" id="input-image" accept="image/*" />
+          <div class="content-2 same-content">
+            <p class="content-heading">Latest News</p>
+            <ul>
+              <li>
+                <img src="../assets/news.png" alt="" />
+                <p>Breaking News: Local & Alerts</p>
+              </li>
+              <li>
+                <img src="../assets/latest-updates.jpeg" alt="" />
+                <p>Latest updates from around the world</p>
+              </li>
+              <li>
+                <img src="../assets/world-news.jpeg" alt="" />
+                <p>News from all around the world</p>
+              </li>
+              <li>
+                <img src="../assets/streaming-now.jpeg" alt="" />
+                <p>Streaming now live!</p>
+              </li>
+            </ul>
           </div>
-          <button class="share-btn">Share</button>
         </div>
-        <p class="end-feed">end of feed</p>
-      </div>
-      <div class="right-content">
-        <div class="content-1 same-content">
-          <p class="content-heading">Recent Notifications</p>
-          <ul>
-            <li>
-              <img src="../assets/john.jpeg" alt="" />
-              <p>John just updated his profile picture</p>
-            </li>
-            <li>
-              <img src="../assets/david.jpeg" alt="" />
-              <p>Dr David is live!</p>
-            </li>
-            <li>
-              <img src="../assets/sam.jpeg" alt="" />
-              <p>Sam posted for the first time in a while</p>
-            </li>
-            <li>
-              <img src="../assets/dana.jpeg" alt="" />
-              <p>Dana shared an insight</p>
-            </li>
-            <li>
-              <img src="../assets/get-an-A.jpeg" alt="" />
-              <p>How to stay healthy and fit ...</p>
-            </li>
-          </ul>
+        <div class="main-content">
+          <div class="same-content user-input">
+            <div class="logo user-logo">
+              <p class="logo-text"></p>
+            </div>
+            <input
+              type="text"
+              class="user-text"
+              placeholder="what's on your mind!"
+            />
+            <div class="input-image-wrapper">
+              <label for="input-image">image</label>
+              <input type="file" name="" id="input-image" accept="image/*" />
+            </div>
+            <button class="share-btn">Share</button>
+          </div>
+          <p class="end-feed">end of feed</p>
         </div>
-        <div class="content-2 same-content">
-          <p class="content-heading">Advertisement</p>
-          <ul>
-            <li><img src="../assets/advertisement.jpeg" alt="" /></li>
-          </ul>
-        </div>
-        <div class="content-3 same-content">
-          <p class="content-heading">Friends Zone</p>
-          <ul>
-            <li>
-              <img src="../assets/afridi.jpeg" alt="" />
-              <p>Shahid Afridi</p>
-            </li>
-            <li>
-              <img src="../assets/bill-gates.jpeg" alt="" />
-              <p>Bill Gates</p>
-            </li>
-            <li>
-              <img src="../assets/elon-musk.jpeg" alt="" />
-              <p>Elon Musk</p>
-            </li>
-          </ul>
+        <div class="right-content">
+          <div class="content-1 same-content">
+            <p class="content-heading">Recent Notifications</p>
+            <ul>
+              <li>
+                <img src="../assets/john.jpeg" alt="" />
+                <p>John just updated his profile picture</p>
+              </li>
+              <li>
+                <img src="../assets/david.jpeg" alt="" />
+                <p>Dr David is live!</p>
+              </li>
+              <li>
+                <img src="../assets/sam.jpeg" alt="" />
+                <p>Sam posted for the first time in a while</p>
+              </li>
+              <li>
+                <img src="../assets/dana.jpeg" alt="" />
+                <p>Dana shared an insight</p>
+              </li>
+              <li>
+                <img src="../assets/get-an-A.jpeg" alt="" />
+                <p>How to stay healthy and fit ...</p>
+              </li>
+            </ul>
+          </div>
+          <div class="content-2 same-content">
+            <p class="content-heading">Advertisement</p>
+            <ul>
+              <li><img src="../assets/advertisement.jpeg" alt="" /></li>
+            </ul>
+          </div>
+          <div class="content-3 same-content">
+            <p class="content-heading">Friends Zone</p>
+            <ul>
+              <li>
+                <img src="../assets/afridi.jpeg" alt="" />
+                <p>Shahid Afridi</p>
+              </li>
+              <li>
+                <img src="../assets/bill-gates.jpeg" alt="" />
+                <p>Bill Gates</p>
+              </li>
+              <li>
+                <img src="../assets/elon-musk.jpeg" alt="" />
+                <p>Elon Musk</p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <dialog class="settings-modal">
       <div class="modal-wrapper">
-        <div class="logo">
+        <div class="logo user-logo">
           <p class="logo-text"></p>
         </div>
         <div class="input-image-wrapper">

@@ -43,7 +43,7 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 }
 
 div.green {
@@ -127,6 +127,7 @@ header {
   background-color: #fff;
   padding: 0.8em 0;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  position: fixed;
 }
 
 .nav-content ul {
@@ -257,9 +258,10 @@ dialog {
   transform: translate(-50%, -50%);
 }
 
-.content {
+.content .content-container {
   display: flex;
   justify-content: space-between;
+  padding-top: 100px;
 }
 
 .content-heading {
@@ -426,11 +428,11 @@ input[type="file"] {
 }
 
 header.wrapper {
-  position: relative;
-  width: auto;
+  /* position: relative; */
+  /* width: auto; */
   height: auto;
   display: block;
-  position: relative;
+  z-index: 20;
 }
 
 .wrapper.wrapper-un-active::before {

@@ -8,7 +8,8 @@ const userText = document.querySelector(".user-text");
 const mainContent = document.querySelector(".main-content");
 const userInput = document.querySelector(".user-input");
 const home = document.querySelector(".home");
-const profile = document.querySelector(".profile");
+const profile = document.querySelectorAll(".profile");
+const navProfile = document.querySelector(".nav-profile");
 const header = document.querySelector("header");
 const modal = document.querySelector(".settings-modal");
 const modalUsername = document.querySelector("#modal-username");
@@ -27,6 +28,7 @@ const messageModal = document.querySelector(".message-modal");
 const notificationModal = document.querySelector(".notification-modal");
 const messageBtn = document.querySelector(".message-btn");
 const notificationBtn = document.querySelector(".notification-btn");
+const siteLogo = document.querySelector(".site-logo img");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -51,6 +53,13 @@ if (!(currentUser.name in images)) images[currentUser.name] = [];
 modalUsername.value = currentUser.name;
 modalEmail.value = currentUser.email;
 modalPassword.value = currentUser.password;
+
+siteLogo.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    window.location.reload();
+  }, 1500);
+});
 
 logo.addEventListener("click", () => {
   sidebar.style.opacity = "1";
@@ -134,12 +143,14 @@ home.addEventListener("click", () => {
       header.classList.remove("wrapper-un-active");
     }, 1500);
     home.classList.add("active-anchor");
-    profile.classList.remove("active-anchor");
+    navProfile.classList.remove("active-anchor");
     window.location.reload();
   }, 1500);
 });
 
-profile.addEventListener("click", () => showProfile());
+profile.forEach((val) => {
+  val.addEventListener("click", () => showProfile());
+});
 
 function imageUpload() {
   let storedImages = JSON.parse(localStorage.getItem("images"));
@@ -197,12 +208,13 @@ function showProfile() {
     });
     displayLogo();
     currentUserProfileImages();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
     header.classList.add("wrapper-un-active");
     header.classList.remove("wrapper-active");
     setTimeout(() => {
       header.classList.remove("wrapper-un-active");
     }, 1500);
-    profile.classList.add("active-anchor");
+    navProfile.classList.add("active-anchor");
     home.classList.remove("active-anchor");
   }, 1500);
 }
