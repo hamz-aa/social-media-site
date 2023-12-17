@@ -10,13 +10,23 @@ const userInput = document.querySelector(".user-input");
 const home = document.querySelector(".home");
 const profile = document.querySelector(".profile");
 const header = document.querySelector("header");
-const modal = document.querySelector("dialog");
+const modal = document.querySelector(".settings-modal");
 const modalUsername = document.querySelector("#modal-username");
 const modalEmail = document.querySelector("#modal-email");
 const modalPassword = document.querySelector("#modal-password");
 const modalImage = document.querySelector("#modal-image");
 const applyBtn = document.querySelector(".apply-btn");
 const leaveBtn = document.querySelector(".leave-link");
+const editLeaveBtn = document.querySelector(".edit-leave-link");
+const editModal = document.querySelector(".edit-modal");
+const captionInput = document.querySelector("input#caption");
+const editApplyBtn = document.querySelector(".edit-apply-changes");
+const message = document.querySelector(".message");
+const notification = document.querySelector(".notification");
+const messageModal = document.querySelector(".message-modal");
+const notificationModal = document.querySelector(".notification-modal");
+const messageBtn = document.querySelector(".message-btn");
+const notificationBtn = document.querySelector(".notification-btn");
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -216,7 +226,7 @@ function imagePost(val) {
     <div class="post-btn-wrapper">
     <i class="fa-solid fa-ellipsis" onclick="postButtonHandler(event)"></i>
     <div class="post-btn" id="${val.id}">
-      <button>Edit</button>
+      <button onclick="editButtonHandler(event)">Edit</button>
       <button onclick="deleteButtonHandler(event)">Delete</button>
     </div>
     </div>
@@ -258,7 +268,7 @@ function captionPost(val) {
     <div class="post-btn-wrapper">
     <i class="fa-solid fa-ellipsis" onclick="postButtonHandler(event)"></i>
     <div class="post-btn" id="${val.id}">
-      <button>Edit</button>
+      <button onclick="editButtonHandler(event)">Edit</button>
       <button onclick="deleteButtonHandler(event)">Delete</button>
     </div>
     </div>
@@ -467,6 +477,98 @@ function deleteButtonHandler(event) {
     }
   }
 }
+
+function editButtonHandler(event) {
+  for (let image in images) {
+    if (event.currentTarget.parentNode.id == images[image].id) {
+      header.classList.add("wrapper-active");
+      setTimeout(() => {
+        captionInput.value = images[image].caption;
+        captionInput.classList.add(images[image].id);
+        editModal.showModal();
+        header.classList.add("wrapper-un-active");
+        header.classList.remove("wrapper-active");
+        setTimeout(() => {
+          header.classList.remove("wrapper-un-active");
+        }, 1500);
+      }, 1500);
+    }
+  }
+}
+
+editLeaveBtn.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    editModal.close();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
+});
+
+editApplyBtn.addEventListener("click", () => {
+  for (let image in images) {
+    if (captionInput.classList.contains(images[image].id)) {
+      header.classList.add("wrapper-active");
+      setTimeout(() => {
+        images[image].caption = captionInput.value;
+        localStorage.setItem("images", JSON.stringify(images));
+        editModal.close();
+        sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+        header.classList.remove("wrapper-active");
+        window.location.reload();
+      }, 1500);
+    }
+  }
+});
+
+message.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    messageModal.showModal();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    header.classList.add("wrapper-un-active");
+    header.classList.remove("wrapper-active");
+    setTimeout(() => {
+      header.classList.remove("wrapper-un-active");
+    }, 1500);
+  }, 1500);
+});
+
+messageBtn.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    messageModal.close();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
+});
+
+notification.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    notificationModal.showModal();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    header.classList.add("wrapper-un-active");
+    header.classList.remove("wrapper-active");
+    setTimeout(() => {
+      header.classList.remove("wrapper-un-active");
+    }, 1500);
+  }, 1500);
+});
+
+notificationBtn.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    notificationModal.close();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
+});
 
 profileImageUpload();
 userLogoUpload();
