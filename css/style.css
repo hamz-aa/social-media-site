@@ -578,3 +578,22 @@ header .main-img-logo {
   color: #868992;
   opacity: 0.95;
 }
+
+a.edit-apply-changes {
+  display: block;
+  text-align: center;
+  width: 300px;
+  background-color: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: block;
+}
+
+a.edit-apply-changes:hover {
+  transition: 0.3s ease;
+  background-color: #3c4d6f;
+}

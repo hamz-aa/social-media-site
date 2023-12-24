@@ -29,6 +29,9 @@ const notificationModal = document.querySelector(".notification-modal");
 const messageBtn = document.querySelector(".message-btn");
 const notificationBtn = document.querySelector(".notification-btn");
 const siteLogo = document.querySelector(".site-logo img");
+const imageLabel = document.querySelector(
+  ".user-input .input-image-wrapper label"
+);
 
 sidebar.style.opacity = "0";
 userText.value = "";
@@ -97,6 +100,9 @@ imageInput.addEventListener("change", (e) => {
 
   if (image) reader.readAsDataURL(image);
   flag = true;
+
+  imageLabel.style.backgroundColor = "green";
+  imageLabel.style.color = "white";
 });
 
 shareBtn.addEventListener("click", function () {
@@ -522,37 +528,31 @@ function displayCustomLogo(user) {
   });
 }
 
-// editLeaveBtn.addEventListener("click", () => {
-// header.classList.add("wrapper-active");
-// setTimeout(() => {
-//   editModal.close();
-//   sidebar.classList.replace("active-sidebar", "un-active-sidebar");
-//   header.classList.remove("wrapper-active");
-//   window.location.reload();
-// }, 1500);
-// });
+editLeaveBtn.addEventListener("click", () => {
+  header.classList.add("wrapper-active");
+  setTimeout(() => {
+    editModal.close();
+    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+    header.classList.remove("wrapper-active");
+    window.location.reload();
+  }, 1500);
+});
 
-function editApplyBtnHandler(event) {
-  console.log("here");
-}
-
-// editApplyBtn.addEventListener("click", () => {
-//   for (let image of images) {
-//     console.log(image);
-// if (captionInput.classList.contains(images[image].id)) {
-//   console.log("here");
-//   header.classList.add("wrapper-active");
-//   setTimeout(() => {
-//     images[image].caption = captionInput.value;
-//     localStorage.setItem("images", JSON.stringify(images));
-//     // editModal.close();
-//     // sidebar.classList.replace("active-sidebar", "un-active-sidebar");
-//     // header.classList.remove("wrapper-active");
-//     // window.location.reload();
-//   }, 1500);
-// }
-//   }
-// });
+editApplyBtn.addEventListener("click", () => {
+  for (let image in images) {
+    if (captionInput.classList.contains(images[image].id)) {
+      header.classList.add("wrapper-active");
+      setTimeout(() => {
+        images[image].caption = captionInput.value;
+        localStorage.setItem("images", JSON.stringify(images));
+        editModal.close();
+        sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+        header.classList.remove("wrapper-active");
+        window.location.reload();
+      }, 1500);
+    }
+  }
+});
 
 message.addEventListener("click", () => {
   header.classList.add("wrapper-active");
