@@ -21,7 +21,7 @@ const leaveBtn = document.querySelector(".leave-link");
 const editLeaveBtn = document.querySelector(".edit-leave-link");
 const editModal = document.querySelector(".edit-modal");
 const captionInput = document.querySelector("input#caption");
-const editApplyBtn = document.querySelector(".edit-apply-changes");
+const editApplyBtn = document.querySelector(".edit-modal .edit-apply-changes");
 const message = document.querySelector(".message");
 const notification = document.querySelector(".notification");
 const messageModal = document.querySelector(".message-modal");
@@ -192,20 +192,23 @@ function showProfile() {
 
     let storedImages = JSON.parse(localStorage.getItem("images"));
 
-    storedImages.reverse().forEach((val) => {
-      if (val.key === currentUser.name) {
-        const card = document.createElement("div");
-        card.classList.add("same-content", "card", `${val.key}`);
+    if (storedImages) {
+      storedImages.reverse().forEach((val) => {
+        if (val.key === currentUser.name) {
+          const card = document.createElement("div");
+          card.classList.add("same-content", "card", `${val.key}`);
 
-        if (!val.img) {
-          card.innerHTML += captionPost(val);
-        } else {
-          card.innerHTML += imagePost(val);
+          if (!val.img) {
+            card.innerHTML += captionPost(val);
+          } else {
+            card.innerHTML += imagePost(val);
+          }
+
+          mainContent.appendChild(card);
         }
+      });
+    }
 
-        mainContent.appendChild(card);
-      }
-    });
     displayLogo();
     currentUserProfileImages();
     sidebar.classList.replace("active-sidebar", "un-active-sidebar");
@@ -337,7 +340,7 @@ function currentUserProfileImages() {
 function profileImageUpload() {
   users.forEach((user) => {
     if (user.img) {
-      let modalLogo = document.querySelectorAll(".logo-text");
+      let modalLogo = document.querySelectorAll(`.${user.name} .logo-text`);
       modalLogo.forEach((val) => {
         val.remove();
       });
@@ -351,6 +354,8 @@ function profileImageUpload() {
           val.classList.add("main-img-logo");
         else val.classList.add("img-logo");
       });
+    } else {
+      displayCustomLogo(user);
     }
   });
 }
@@ -360,6 +365,8 @@ function userLogoUpload() {
     if (user.img) {
       if (user.name === currentUser.name) {
         const userLogo = document.querySelectorAll(".user-logo");
+        const p = document.querySelectorAll(".user-logo p.logo-text");
+        p.forEach((p) => p.remove());
         userLogo.forEach((val) => {
           const newImage = document.createElement("img");
           newImage.src = user.img;
@@ -508,31 +515,44 @@ function editButtonHandler(event) {
   }
 }
 
-editLeaveBtn.addEventListener("click", () => {
-  header.classList.add("wrapper-active");
-  setTimeout(() => {
-    editModal.close();
-    sidebar.classList.replace("active-sidebar", "un-active-sidebar");
-    header.classList.remove("wrapper-active");
-    window.location.reload();
-  }, 1500);
-});
+function displayCustomLogo(user) {
+  const logos = document.querySelectorAll(`.${user.name} .logo-text`);
+  logos.forEach((logo) => {
+    logo.textContent = user.name.slice(0, 2).toUpperCase();
+  });
+}
 
-editApplyBtn.addEventListener("click", () => {
-  for (let image in images) {
-    if (captionInput.classList.contains(images[image].id)) {
-      header.classList.add("wrapper-active");
-      setTimeout(() => {
-        images[image].caption = captionInput.value;
-        localStorage.setItem("images", JSON.stringify(images));
-        editModal.close();
-        sidebar.classList.replace("active-sidebar", "un-active-sidebar");
-        header.classList.remove("wrapper-active");
-        window.location.reload();
-      }, 1500);
-    }
-  }
-});
+// editLeaveBtn.addEventListener("click", () => {
+// header.classList.add("wrapper-active");
+// setTimeout(() => {
+//   editModal.close();
+//   sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+//   header.classList.remove("wrapper-active");
+//   window.location.reload();
+// }, 1500);
+// });
+
+function editApplyBtnHandler(event) {
+  console.log("here");
+}
+
+// editApplyBtn.addEventListener("click", () => {
+//   for (let image of images) {
+//     console.log(image);
+// if (captionInput.classList.contains(images[image].id)) {
+//   console.log("here");
+//   header.classList.add("wrapper-active");
+//   setTimeout(() => {
+//     images[image].caption = captionInput.value;
+//     localStorage.setItem("images", JSON.stringify(images));
+//     // editModal.close();
+//     // sidebar.classList.replace("active-sidebar", "un-active-sidebar");
+//     // header.classList.remove("wrapper-active");
+//     // window.location.reload();
+//   }, 1500);
+// }
+//   }
+// });
 
 message.addEventListener("click", () => {
   header.classList.add("wrapper-active");
