@@ -93,16 +93,20 @@ imageInput.addEventListener("change", (e) => {
       caption: userText.value,
     };
 
-    images.push(data);
-    localStorage.setItem("images", JSON.stringify(images));
-    localStorage.setItem("id", JSON.stringify(id));
+    try {
+      images.push(data);
+      localStorage.setItem("images", JSON.stringify(images));
+      localStorage.setItem("id", JSON.stringify(id));
+    } catch (ex) {
+      return alert("Image size is too large!");
+    }
+
+    imageLabel.style.backgroundColor = "green";
+    imageLabel.style.color = "white";
   });
 
   if (image) reader.readAsDataURL(image);
   flag = true;
-
-  imageLabel.style.backgroundColor = "green";
-  imageLabel.style.color = "white";
 });
 
 shareBtn.addEventListener("click", function () {
